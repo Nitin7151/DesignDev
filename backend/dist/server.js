@@ -18,6 +18,10 @@ app.use((0, cors_1.default)({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express_1.default.json());
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok' });
+});
 // API Routes
 app.use('/api', apiRoutes_1.default);
 // For backward compatibility, redirect old endpoints to new API routes

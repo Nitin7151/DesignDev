@@ -1,52 +1,75 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Wand2 } from 'lucide-react';
-import axios from "axios";
+import axios from 'axios';
 import { BACKEND_URL } from '../config';
+import Navbar from '../components/Navbar';
+import Features from '../components/Features';
+import Testimonials from '../components/Testimonials';
+import Footer from '../components/Footer';
+import Bubbles from '../components/Bubbles';
 
 export function Home() {
   const [prompt, setPrompt] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (prompt.trim()) {
+    if (!prompt.trim()) return;
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Test the API connection first
+      await axios.get(`${BACKEND_URL}/health`);
       navigate('/builder', { state: { prompt } });
+    } catch (err: any) {
+      console.error('API Error:', err);
+      setError(err.response?.data?.message || 'Failed to connect to the server. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center p-4">
-      <div className="max-w-2xl w-full">
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <Wand2 className="w-12 h-12 text-blue-400" />
-          </div>
-          <h1 className="text-4xl font-bold text-gray-100 mb-4">
-            Website Builder AI
-          </h1>
-          <p className="text-lg text-gray-300">
-            Describe your dream website, and we'll help you build it step by step
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-            <textarea
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              placeholder="Describe the website you want to build..."
-              className="w-full h-32 p-4 bg-gray-900 text-gray-100 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none placeholder-gray-500"
-            />
-            <button
-              type="submit"
-              className="w-full mt-4 bg-blue-600 text-gray-100 py-3 px-6 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-            >
-              Generate Website Plan
-            </button>
-          </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white relative">
+      <Navbar />
+      <div className="relative flex flex-col items-center text-center py-24 px-4">
+        <Bubbles />
+        <Wand2 className="w-16 h-16 text-blue-400 mb-4 animate-pulse" />
+        <h1 className="text-5xl font-extrabold leading-tight mb-4">
+          Convert Your PRD into Working Prototype in Minutes
+        </h1>
+        <p className="text-lg max-w-2xl">
+          Prompt your website, and we will make it for you.
+        </p>
+        <form onSubmit={handleSubmit} className="mt-6 w-full max-w-xl">
+          <textarea
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder="Describe the website you want to build..."
+            className="w-full h-32 p-4 bg-gray-900 text-gray-100 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none placeholder-gray-500"
+          />
+          {error && (
+            <div className="mt-4 text-red-400 text-sm">{error}</div>
+          )}
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full mt-4 bg-blue-600 text-gray-100 py-3 px-6 rounded-lg font-medium transition-all ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}`}
+          >
+            {loading ? 'Processing...' : 'Convert Your PRD into Prototype'}
+          </button>
         </form>
       </div>
+      <Testimonials />
+      <Features />
+      <Footer />
     </div>
   );
 }
+
+export default Home;

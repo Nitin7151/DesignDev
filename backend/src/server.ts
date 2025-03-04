@@ -17,10 +17,15 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// // Health check endpoint
+// app.get('/api/health', (req, res) => {
+//   res.json({ status: 'ok' });
+// });
+
 // API Routes
 app.use('/api', apiRoutes);
 
-// For backward compatibility, redirect old endpoints to new API routes
+
 app.post("/template", (req, res) => {
   res.redirect(307, '/api/ai/template');
 });
