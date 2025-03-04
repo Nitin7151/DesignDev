@@ -18,6 +18,9 @@ export function PreviewFrame({ files, webContainer }: PreviewFrameProps) {
         console.log(data);
       }
     }));
+    
+    console.log("WebContainer:", webContainer);
+
 
     await webContainer.spawn('npm', ['run', 'dev']);
 
