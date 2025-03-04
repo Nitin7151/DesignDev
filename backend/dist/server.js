@@ -12,7 +12,11 @@ const apiRoutes_1 = __importDefault(require("./routes/apiRoutes"));
 (0, database_1.default)();
 const app = (0, express_1.default)();
 // Middleware
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: ['http://localhost:5173'],
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express_1.default.json());
 // API Routes
 app.use('/api', apiRoutes_1.default);
