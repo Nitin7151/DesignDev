@@ -69,13 +69,18 @@ export function Builder() {
     };
   }, [steps, visibleSteps, showAnimation]);
 
+
+  // --------------------------------------create file explorer code -------------------------------------
+  // yahan pe recrusively agar file nahi hai to create hora agar hai to update hora same for foler as well.
+  // folder me file nahi hai to create karna, agar hai to update karna
+
   useEffect(() => {
     let originalFiles = [...files];
     let updateHappened = false;
     steps.filter(({status}) => status === "pending").map(step => {
       updateHappened = true;
       if (step?.type === StepType.CreateFile) {
-        let parsedPath = step.path?.split("/") ?? []; // ["src", "components", "App.tsx"]
+        let parsedPath = step.path?.split("/") ?? []; 
         let currentFileStructure = [...originalFiles]; // {}
         let finalAnswerRef = currentFileStructure;
   
@@ -133,6 +138,8 @@ export function Builder() {
     console.log(files);
   }, [steps, files]);
 
+
+// -----------------------------webContainerCode---------------------------------------------
   useEffect(() => {
     const createMountStructure = (files: FileItem[]): Record<string, any> => {
       const mountStructure: Record<string, any> = {};
@@ -188,6 +195,8 @@ export function Builder() {
       language: 'typescript'
     });
     setTemplateSet(true);
+    
+
     // -------------------------------------build steps functionality----------------------------------------
     // ------------ye api prompts, ui prompts return karega so we have to pass it to another api as message-----------
     
