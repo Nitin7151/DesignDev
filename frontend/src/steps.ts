@@ -1,8 +1,8 @@
 import { Step, StepType } from './types';
 
 /*
- * Parse input XML and convert it into steps.
- * Eg: Input - 
+ * -------------------------------Parse input XML and convert it into steps.--------------------------------------
+ * -----Eg: Input - this we are getting from api/ai/template api ->we are converting it into human readable form
  * <boltArtifact id=\"project-import\" title=\"Project Files\">
  *  <boltAction type=\"file\" filePath=\"eslint.config.js\">
  *      import js from '@eslint/js';\nimport globals from 'globals';\n

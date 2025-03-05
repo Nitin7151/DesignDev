@@ -2,7 +2,9 @@ require("dotenv").config();
 import express from "express";
 import cors from "cors";
 import connectDB from "./config/database";
-import apiRoutes from "./routes/apiRoutes";
+import authRoutes from "./routes/authRoutes";
+import aiRoutes from "./routes/aiRoutes";
+import { protect } from "./middleware/auth";
 
 // Connect to MongoDB
 connectDB();
@@ -17,26 +19,21 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// // Health check endpoint
-// app.get('/api/health', (req, res) => {
-//   res.json({ status: 'ok' });
-// });
-
-// API Routes
-app.use('/api', apiRoutes);
-
-
-app.post("/template", (req, res) => {
-  res.redirect(307, '/api/ai/template');
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
 });
 
-app.post("/chat", (req, res) => {
-  res.redirect(307, '/api/ai/chat');
+// Mount routes directly
+app.use('/api/auth', authRoutes);
+app.use('/api/ai', aiRoutes);
+
+// Protected route example
+app.get('/api/protected', protect, (req, res) => {
+  res.json({ message: 'This is a protected route', user: req.user });
 });
 
-app.post("/chat-stream", (req, res) => {
-  res.redirect(307, '/api/ai/chat-stream');
-});
+// These routes are now directly handled by aiRoutes
 
 
 const PORT = process.env.PORT || 3001;

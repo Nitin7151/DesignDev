@@ -51,8 +51,10 @@ export function Builder() {
 
   const [files, setFiles] = useState<FileItem[]>([]);
 
+
+  // Animation for steps appearing one by one
   useEffect(() => {
-    // Animation for steps appearing one by one
+    
     if (showAnimation && steps.length > 0 && visibleSteps.length < steps.length) {
       const nextIndex = visibleSteps.length;
       animationTimeoutRef.current = setTimeout(() => {
@@ -186,6 +188,8 @@ export function Builder() {
       language: 'typescript'
     });
     setTemplateSet(true);
+    // -------------------------------------build steps functionality----------------------------------------
+    // ------------ye api prompts, ui prompts return karega so we have to pass it to another api as message-----------
     
     const {prompts, uiPrompts} = response.data;
 
@@ -195,6 +199,7 @@ export function Builder() {
     })));
 
     setLoading(true);
+    // prompts came in ititial requres+user prompt yahan pass hora
     const stepsResponse = await axios.post(`${BACKEND_URL}/ai/chat`, {
       messages: [...prompts, prompt].map(content => ({
         role: "user",

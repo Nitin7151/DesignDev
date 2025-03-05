@@ -6,6 +6,7 @@ interface StepsListProps {
   steps: Step[];
   currentStep: number;
   onStepClick: (stepId: number) => void;
+  
 }
 
 export function StepsList({ steps, currentStep, onStepClick }: StepsListProps) {

@@ -9,19 +9,17 @@ const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/
 
 // @desc    Generate template based on prompt
 // @route   POST /api/ai/template
-// @access  Protected
+
 export const generateTemplate = async (req: Request, res: Response): Promise<any> => {
     const prompt = req.body.prompt;
-    const language = req.body.language;
     
+
     // Validate required parameters
     if (!prompt) {
         return res.status(400).json({ message: "Prompt is required" });
     }
     
-    if (!language) {
-        return res.status(400).json({ message: "Language is required" });
-    }
+   
     
     try {
         const response = await axios.post(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
@@ -44,7 +42,9 @@ export const generateTemplate = async (req: Request, res: Response): Promise<any
 
         if (answer === "react") {
             res.json({
+                // this is passed to ai so ai can generate code based on this.
                 prompts: [BASE_PROMPT, `Here is an artifact that contains all files of the project visible to you.\n\n${reactBasePrompt}`],
+                // this is passed to ui so ui can start building initial project.
                 uiPrompts: [reactBasePrompt]
             });
             return;
@@ -52,7 +52,7 @@ export const generateTemplate = async (req: Request, res: Response): Promise<any
 
         if (answer === "node") {
             res.json({
-                prompts: [BASE_PROMPT, `Here is an artifact that contains all files of the project visible to you.\n\n${nodeBasePrompt}`],
+                prompts: [`Here is an artifact that contains all files of the project visible to you.\n\n${nodeBasePrompt}`],
                 uiPrompts: [nodeBasePrompt]
             });
             return;
@@ -65,9 +65,9 @@ export const generateTemplate = async (req: Request, res: Response): Promise<any
     }
 };
 
-// @desc    Generate chat response
-// @route   POST /api/ai/chat
-// @access  Protected
+//   Generate chat response
+//   POST /api/ai/chat
+
 export const generateChat = async (req: Request, res: Response): Promise<any> => {
     const messages = req.body.messages;
     
@@ -98,9 +98,8 @@ export const generateChat = async (req: Request, res: Response): Promise<any> =>
     }
 };
 
-// @desc    Generate streaming chat response
-// @route   POST /api/ai/chat-stream
-// @access  Protected
+// Generate streaming chat response
+
 export const generateChatStream = async (req: Request, res: Response): Promise<any> => {
     const messages = req.body.messages;
     

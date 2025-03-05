@@ -21,17 +21,12 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent';
 // @desc    Generate template based on prompt
 // @route   POST /api/ai/template
-// @access  Protected
 const generateTemplate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e, _f, _g;
     const prompt = req.body.prompt;
-    const language = req.body.language;
     // Validate required parameters
     if (!prompt) {
         return res.status(400).json({ message: "Prompt is required" });
-    }
-    if (!language) {
-        return res.status(400).json({ message: "Language is required" });
     }
     try {
         const response = yield axios_1.default.post(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
@@ -50,14 +45,16 @@ const generateTemplate = (req, res) => __awaiter(void 0, void 0, void 0, functio
         const answer = text.trim();
         if (answer === "react") {
             res.json({
+                // this is passed to ai so ai can generate code based on this.
                 prompts: [prompt_1.BASE_PROMPT, `Here is an artifact that contains all files of the project visible to you.\n\n${react_1.basePrompt}`],
+                // this is passed to ui so ui can start building initial project.
                 uiPrompts: [react_1.basePrompt]
             });
             return;
         }
         if (answer === "node") {
             res.json({
-                prompts: [prompt_1.BASE_PROMPT, `Here is an artifact that contains all files of the project visible to you.\n\n${node_1.basePrompt}`],
+                prompts: [`Here is an artifact that contains all files of the project visible to you.\n\n${node_1.basePrompt}`],
                 uiPrompts: [node_1.basePrompt]
             });
             return;
@@ -70,9 +67,8 @@ const generateTemplate = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.generateTemplate = generateTemplate;
-// @desc    Generate chat response
-// @route   POST /api/ai/chat
-// @access  Protected
+//   Generate chat response
+//   POST /api/ai/chat
 const generateChat = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e, _f, _g;
     const messages = req.body.messages;
@@ -101,9 +97,7 @@ const generateChat = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.generateChat = generateChat;
-// @desc    Generate streaming chat response
-// @route   POST /api/ai/chat-stream
-// @access  Protected
+// Generate streaming chat response
 const generateChatStream = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e, _f, _g;
     const messages = req.body.messages;
