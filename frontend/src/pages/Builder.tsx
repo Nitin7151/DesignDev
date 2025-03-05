@@ -365,18 +365,18 @@ export function Builder() {
                   Build Steps
                 </button>
                 <button
-                  onClick={() => setViewMode('prompt')}
-                  className={`px-3 py-2 rounded-t-md text-sm flex items-center transition-all duration-300 ${viewMode === 'prompt' ? 'bg-gray-700 text-white border-b-2 border-blue-500' : 'text-gray-300 hover:text-white'}`}
-                >
-                  <Play className="w-4 h-4 mr-1" />
-                  New Prompt
-                </button>
-                <button
                   onClick={() => setViewMode('files')}
                   className={`px-3 py-2 rounded-t-md text-sm flex items-center transition-all duration-300 ${viewMode === 'files' ? 'bg-gray-700 text-white border-b-2 border-blue-500' : 'text-gray-300 hover:text-white'}`}
                 >
                   <Folder className="w-4 h-4 mr-1 text-yellow-400" />
                   Project Files
+                </button>
+                <button
+                  onClick={() => setViewMode('prompt')}
+                  className={`px-3 py-2 rounded-t-md text-sm flex items-center transition-all duration-300 ${viewMode === 'prompt' ? 'bg-gray-700 text-white border-b-2 border-blue-500' : 'text-gray-300 hover:text-white'}`}
+                >
+                  <Play className="w-4 h-4 mr-1" />
+                  New Prompt
                 </button>
               </div>
               <AnimatePresence mode="wait">
