@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FileText, Code, Play, Eye, Check, Folder, FolderOpen, File } from 'lucide-react';
+import { FileText, Code, Play, Eye, Check, Folder, FolderOpen, File, Download } from 'lucide-react';
 import { AnimatedCodeEditor } from '../components/AnimatedCodeEditor';
 import { useLocation } from 'react-router-dom';
 import { StepsList } from '../components/StepsList';
@@ -15,6 +15,8 @@ import { parseXml } from '../steps';
 import { useWebContainer } from '../hooks/useWebContainer';
 import { FileNode } from '@webcontainer/api';
 import { Loader } from '../components/Loader';
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 
 const MOCK_FILE_CONTENT = `// This is a sample file content
 import React from 'react';
@@ -189,6 +191,44 @@ export function Builder() {
 
 
 
+  const exportProject = async () => {
+    try {
+      // Create a new JSZip instance
+      const zip = new JSZip();
+      
+      // Recursive function to add files and folders to zip
+      const addToZip = (items: FileItem[], currentPath: string = '') => {
+        items.forEach(item => {
+          const itemPath = currentPath ? `${currentPath}/${item.name}` : item.name;
+          
+          if (item.type === 'file' && item.content) {
+            // Add file to zip
+            zip.file(itemPath, item.content);
+          } else if (item.type === 'folder' && item.children) {
+            // Create folder and add its children recursively
+            addToZip(item.children, itemPath);
+          }
+        });
+      };
+      
+      // Add all files and folders to zip
+      addToZip(files);
+      
+      // Generate the zip file
+      const content = await zip.generateAsync({ type: 'blob' });
+      
+      // Save the zip file
+      saveAs(content, 'project.zip');
+      
+      // Show success message
+      setError('');
+      alert('Project exported successfully!');
+    } catch (err: any) {
+      console.error('Error exporting project:', err);
+      setError(`Failed to export project: ${err.message}`);
+    }
+  };
+
   async function init() {
     try {
       setLoading(true);
@@ -291,6 +331,14 @@ export function Builder() {
             >
               <Eye className="w-4 h-4 mr-1" />
               {showAnimation ? 'Animations On' : 'Animations Off'}
+            </button>
+            
+            <button 
+              onClick={exportProject}
+              className="px-3 py-1 rounded-md text-sm flex items-center bg-green-600 text-white hover:bg-green-700 transition-colors"
+            >
+              <Download className="w-4 h-4 mr-1" />
+              Export Project
             </button>
           </div>
         </div>

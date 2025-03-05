@@ -37,3 +37,23 @@
 ```sh
 git clone https://github.com/yourusername/ui-generator.git
 cd ui-generator
+```
+
+### **🔹 Using Docker Compose (Recommended)**
+
+The easiest way to run the application is using Docker Compose:
+
+```sh
+# Build and start all containers (frontend, backend, and MongoDB)
+docker compose up --build
+
+# To stop all containers
+docker compose down
+```
+
+Once the containers are running, you can access:
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:3001
+- MongoDB: mongodb://localhost:27017/designdev
+
+### **🔹 Manual Setup
