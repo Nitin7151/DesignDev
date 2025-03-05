@@ -9,6 +9,7 @@ import { Signup } from './pages/Signup';
 import Profile from './pages/Profile';
 import About from './pages/About';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -25,16 +26,19 @@ function App() {
         pauseOnHover
         theme="dark"
       />
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black">
+      <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-900 to-black">
         <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/builder" element={<Builder />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/about" element={<About />} />
-        </Routes>
+        <div className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/builder" element={<Builder />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/about" element={<About />} />
+          </Routes>
+        </div>
+        <Footer />
       </div>
     </BrowserRouter>
   );

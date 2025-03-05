@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Github, Twitter, Linkedin, Mail, Heart } from 'lucide-react';
+import { Github, Twitter, Linkedin, Mail, Heart, Code, Zap, Clock, Brain, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   return (

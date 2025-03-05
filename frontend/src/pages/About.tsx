@@ -60,22 +60,22 @@ const About = () => {
   // Carousel slides data
   const carouselSlides = [
     {
-      image: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+      image: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3840&q=100',
       title: 'Our Mission',
       description: 'To democratize software development by making it accessible to everyone, regardless of technical background.'
     },
     {
-      image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+      image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3840&q=100',
       title: 'Our Team',
       description: 'A diverse group of engineers, designers, and AI specialists working together to revolutionize development.'
     },
     {
-      image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+      image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3840&q=100',
       title: 'Our Values',
       description: 'Innovation, accessibility, and excellence in everything we build and deliver to our users.'
     },
     {
-      image: 'https://images.unsplash.com/photo-1581092335397-9fa73b6c660d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+      image: 'https://images.unsplash.com/photo-1581092335397-9fa73b6c660d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3840&q=100',
       title: 'Our Technology',
       description: 'Cutting-edge AI and machine learning algorithms that understand your requirements and generate optimal code solutions.'
     }
@@ -254,92 +254,44 @@ const About = () => {
       {/* Process Section with 3D Effect */}
       <motion.div 
         style={{ y }}
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 relative"
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16"
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent z-0"></div>
-        <div className="relative z-10">
-          <motion.h2 
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            viewport={{ once: true }}
-            className="text-3xl md:text-5xl font-bold mb-16 text-center bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text"
-          >
-            How It Works
-          </motion.h2>
-          
-          {/* Process Steps with connecting line */}
-          <div className="relative">
-            {/* Connecting line */}
-            <div className="hidden md:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500 transform -translate-y-1/2 rounded-full z-0 opacity-30"></div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
-              {[
-                { step: '01', title: 'Write Your Prompt', description: 'Describe your project requirements in natural language - no coding skills required', icon: <Brain className="w-8 h-8 text-blue-400" /> },
-                { step: '02', title: 'AI Processing', description: 'Our advanced AI analyzes and converts your requirements into clean, efficient code', icon: <Cpu className="w-8 h-8 text-purple-400" /> },
-                { step: '03', title: 'Get Your Project', description: 'Receive a complete, production-ready application with all the features you requested', icon: <Rocket className="w-8 h-8 text-pink-400" /> },
-              ].map((item, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.2, duration: 0.5 }}
-                  viewport={{ once: true }}
-                  className="relative group"
-                >
-                  <GlowingCard 
-                    className="p-8 h-full" 
-                    glowColor={
-                      index === 0 ? "from-blue-500 to-indigo-500" : 
-                      index === 1 ? "from-indigo-500 to-purple-500" : 
-                      "from-purple-500 to-pink-500"
-                    }
+        <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
+          How It Works
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            { step: '01', title: 'Write Your Prompt', description: 'Describe your project requirements in natural language', icon: <Brain className="w-8 h-8" /> },
+            { step: '02', title: 'AI Processing', description: 'Our AI analyzes and converts your requirements into code', icon: <Cpu className="w-8 h-8" /> },
+            { step: '03', title: 'Get Your Project', description: 'Receive a complete, production-ready application', icon: <Rocket className="w-8 h-8" /> },
+          ].map((item, index) => (
+            <motion.div
+              key={index}
+              whileHover={{ y: -10, scale: 1.03 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 10 }}
+              className="relative group"
+            >
+              <GlowingCard className="p-8" glowColor="from-indigo-500 to-purple-500">
+                <div className="flex flex-col items-center text-center">
+                  <div className="text-5xl font-bold bg-gradient-to-br from-purple-400 to-pink-500 text-transparent bg-clip-text mb-4">
+                    {item.step}
+                  </div>
+                  <motion.div 
+                    className="p-4 bg-gradient-to-br from-gray-800 to-gray-900 rounded-full mb-4 shadow-xl"
+                    whileHover={{ rotate: 10, scale: 1.1 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
                   >
-                    <div className="flex flex-col items-center text-center h-full">
-                      {/* Step number with pulsing effect */}
-                      <div className="relative">
-                        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/30 to-purple-500/30 blur-xl animate-pulse"></div>
-                        <div className="text-5xl font-bold bg-gradient-to-br from-purple-400 to-pink-500 text-transparent bg-clip-text mb-4 relative">
-                          {item.step}
-                        </div>
-                      </div>
-                      
-                      {/* Icon with hover effect */}
-                      <motion.div 
-                        className="p-4 bg-gradient-to-br from-gray-800 to-gray-900 rounded-full mb-6 shadow-xl relative"
-                        whileHover={{ rotate: 10, scale: 1.1 }}
-                        transition={{ type: 'spring', stiffness: 300 }}
-                      >
-                        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-md"></div>
-                        <div className="relative">
-                          {item.icon}
-                        </div>
-                      </motion.div>
-                      
-                      {/* Content */}
-                      <h3 className="text-xl font-semibold mb-3">{item.title}</h3>
-                      <p className="text-gray-300">{item.description}</p>
-                    </div>
-                  </GlowingCard>
-                  
-                  {/* Connection arrows */}
-                  {index < 2 && (
-                    <motion.div 
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      transition={{ delay: 0.8 }}
-                      viewport={{ once: true }}
-                      className="hidden md:flex absolute top-1/2 -right-4 transform -translate-y-1/2 z-20"
-                    >
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
-                        <ChevronRight className="w-5 h-5 text-white" />
-                      </div>
-                    </motion.div>
-                  )}
-                </motion.div>
-              ))}
-            </div>
-          </div>
+                    {item.icon}
+                  </motion.div>
+                  <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                  <p className="text-gray-400">{item.description}</p>
+                </div>
+              </GlowingCard>
+              {index < 2 && (
+                <ChevronRight className="hidden md:block absolute top-1/2 -right-6 w-6 h-6 text-purple-500 transform -translate-y-1/2" />
+              )}
+            </motion.div>
+          ))}
         </div>
       </motion.div>
 
