@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import ResizablePanel from '../components/ResizablePanel';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileText, Code, Play, Eye, Check, Folder, FolderOpen, File, Download } from 'lucide-react';
 import { AnimatedCodeEditor } from '../components/AnimatedCodeEditor';
@@ -34,7 +35,7 @@ export function Builder() {
   const [visibleSteps, setVisibleSteps] = useState<Step[]>([]);
   const [showPromptPanel, setShowPromptPanel] = useState(false);
   const [animatedFiles, setAnimatedFiles] = useState<Set<string>>(new Set());
-  const [viewMode, setViewMode] = useState<'steps' | 'prompt'>('steps');
+  const [viewMode, setViewMode] = useState<'steps' | 'prompt' | 'files'>('steps');
   const animationTimeoutRef = useRef<NodeJS.Timeout>();
   const location = useLocation();
   const { prompt } = location.state as { prompt: string };
@@ -345,22 +346,49 @@ export function Builder() {
       </header>
       
       <div className="flex-1 overflow-hidden">
-        <div className="h-full grid grid-cols-4 gap-6 p-6">
-          <div className="col-span-1 space-y-6 overflow-auto">
-            <div>
+        <div className="h-full flex gap-6 p-6">
+          <ResizablePanel 
+            direction="horizontal" 
+            initialSize={300} 
+            minSize={200} 
+            maxSize={500}
+            className="h-full"
+            handleClassName="bg-gray-700/50"
+          >
+            <div className="bg-gray-800 rounded-lg p-4 shadow-lg h-full w-full">
+              <div className="flex space-x-2 mb-4 border-b border-gray-700 pb-2">
+                <button
+                  onClick={() => setViewMode('steps')}
+                  className={`px-3 py-2 rounded-t-md text-sm flex items-center transition-all duration-300 ${viewMode === 'steps' ? 'bg-gray-700 text-white border-b-2 border-blue-500' : 'text-gray-300 hover:text-white'}`}
+                >
+                  <Code className="w-4 h-4 mr-1" />
+                  Build Steps
+                </button>
+                <button
+                  onClick={() => setViewMode('prompt')}
+                  className={`px-3 py-2 rounded-t-md text-sm flex items-center transition-all duration-300 ${viewMode === 'prompt' ? 'bg-gray-700 text-white border-b-2 border-blue-500' : 'text-gray-300 hover:text-white'}`}
+                >
+                  <Play className="w-4 h-4 mr-1" />
+                  New Prompt
+                </button>
+                <button
+                  onClick={() => setViewMode('files')}
+                  className={`px-3 py-2 rounded-t-md text-sm flex items-center transition-all duration-300 ${viewMode === 'files' ? 'bg-gray-700 text-white border-b-2 border-blue-500' : 'text-gray-300 hover:text-white'}`}
+                >
+                  <Folder className="w-4 h-4 mr-1 text-yellow-400" />
+                  Project Files
+                </button>
+              </div>
               <AnimatePresence mode="wait">
-                {viewMode === 'steps' ? (
+                {viewMode === 'steps' && (
                   <motion.div
                     key="steps-panel"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="max-h-[75vh] overflow-auto bg-gray-800 rounded-lg p-4 shadow-lg"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                    className="max-h-[75vh] overflow-auto"
                   >
-                    <h3 className="text-lg font-semibold text-gray-100 mb-4 flex items-center">
-                      <Code className="w-5 h-5 mr-2 text-blue-400" />
-                      Build Steps
-                    </h3>
                     <AnimatePresence>
                       {visibleSteps.map((step, index) => (
                         <motion.div
@@ -392,18 +420,18 @@ export function Builder() {
                       ))}
                     </AnimatePresence>
                   </motion.div>
-                ) : (
+                )}
+                
+                {viewMode === 'prompt' && (
                   <motion.div
                     key="prompt-panel"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="max-h-[75vh] bg-gray-800 rounded-lg p-4 shadow-lg"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                    className="max-h-[75vh]"
                   >
-                    <h3 className="text-lg font-semibold text-gray-100 mb-3 flex items-center">
-                      <Play className="w-5 h-5 mr-2 text-green-400" />
-                      New Prompt
-                    </h3>
+
                     <div className="space-y-3">
                       <textarea 
                         value={userPrompt} 
@@ -457,28 +485,45 @@ export function Builder() {
                   </div>
                 </motion.div>
               )}
+                {viewMode === 'files' && (
+                  <motion.div
+                    key="files-panel"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                    className="max-h-[75vh] overflow-auto"
+                  >
+                    <div className="flex space-x-2 mb-4">
+                      <button
+                        className="px-3 py-1 rounded-md text-sm flex items-center bg-gray-700 text-white"
+                      >
+                        <Folder className="w-4 h-4 mr-1 text-yellow-400" />
+                        Files
+                      </button>
+                      <button
+                        className="px-3 py-1 rounded-md text-sm flex items-center text-gray-300 hover:text-white"
+                      >
+                        <FileText className="w-4 h-4 mr-1 text-blue-400" />
+                        Assets
+                      </button>
+                    </div>
+                    <FileExplorer 
+                      files={files} 
+                      onFileSelect={setSelectedFile}
+                    />
+                  </motion.div>
+                )}
               </AnimatePresence>
             </div>
-          </div>
-          <div className="col-span-1">
-              <div className="bg-gray-800 rounded-lg p-4 shadow-lg h-full">
-                <h3 className="text-lg font-semibold text-gray-100 mb-4 flex items-center">
-                  <Folder className="w-5 h-5 mr-2 text-yellow-400" />
-                  Project Files
-                </h3>
-                <FileExplorer 
-                  files={files} 
-                  onFileSelect={setSelectedFile}
-                />
-              </div>
-            </div>
-          <div className="col-span-2 bg-gray-800 rounded-lg shadow-lg p-4 h-[calc(100vh-8rem)]">
-            <div className="flex space-x-2 mb-4">
+          </ResizablePanel>
+          <div className="flex-1 bg-gray-800 rounded-lg shadow-lg p-4 h-[calc(100vh-8rem)]">
+            <div className="flex space-x-2 mb-4 border-b border-gray-700 pb-2">
               <button
                 onClick={() => setActiveTab('code')}
-                className={`flex items-center px-4 py-2 rounded-md transition-all duration-200 ${
+                className={`flex items-center px-4 py-2 rounded-t-md transition-all duration-200 ${
                   activeTab === 'code'
-                    ? 'bg-blue-500 text-white'
+                    ? 'bg-gray-700 text-white border-b-2 border-blue-500'
                     : 'text-gray-400 hover:text-white hover:bg-gray-700'
                 }`}
               >
@@ -487,9 +532,9 @@ export function Builder() {
               </button>
               <button
                 onClick={() => setActiveTab('preview')}
-                className={`flex items-center px-4 py-2 rounded-md transition-all duration-200 ${
+                className={`flex items-center px-4 py-2 rounded-t-md transition-all duration-200 ${
                   activeTab === 'preview'
-                    ? 'bg-blue-500 text-white'
+                    ? 'bg-gray-700 text-white border-b-2 border-blue-500'
                     : 'text-gray-400 hover:text-white hover:bg-gray-700'
                 }`}
               >

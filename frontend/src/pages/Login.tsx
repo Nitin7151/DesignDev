@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axiosInstance from '../utils/axios';
 import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
@@ -14,7 +14,17 @@ export function Login() {
     password: '',
   });
   const [loading, setLoading] = useState(false);
+  const [savedPrompt, setSavedPrompt] = useState<string | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Check if redirected from home with a prompt
+  useEffect(() => {
+    const { state } = location;
+    if (state && state.prompt) {
+      setSavedPrompt(state.prompt);
+    }
+  }, [location]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -32,7 +42,13 @@ export function Login() {
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data));
       toast.success('Login successful!');
-      navigate('/');
+      
+      // If there was a saved prompt, redirect back to home with it
+      if (savedPrompt) {
+        navigate('/', { state: { fromLogin: true, prompt: savedPrompt } });
+      } else {
+        navigate('/');
+      }
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Login failed');
     } finally {

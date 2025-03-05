@@ -20,16 +20,16 @@ const Step: React.FC<StepProps> = ({ icon, title, description, step, delay }) =>
       viewport={{ once: true }}
     >
       <div className="flex-shrink-0">
-        <div className="w-16 h-16 rounded-full bg-blue-600/20 flex items-center justify-center text-blue-400 relative">
+        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-yellow-400/20 to-blue-600/20 flex items-center justify-center text-yellow-400 relative shadow-lg shadow-yellow-400/10">
           {icon}
-          <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold">
+          <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 flex items-center justify-center text-sm font-bold shadow-md">
             {step}
           </div>
         </div>
       </div>
       <div className="text-center md:text-left">
-        <h3 className="text-xl font-bold mb-2 text-white">{title}</h3>
-        <p className="text-gray-400">{description}</p>
+        <h3 className="text-xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-yellow-100">{title}</h3>
+        <p className="text-gray-300">{description}</p>
       </div>
     </motion.div>
   );
@@ -61,7 +61,9 @@ const HowItWorks: React.FC = () => {
 
   return (
     <section id="how-it-works" className="py-20 px-4 relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-purple-900/10 to-blue-900/10 opacity-30 transform -skew-y-6"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-yellow-400/5 to-blue-600/10 opacity-50 transform -skew-y-6"></div>
+      <div className="absolute top-0 left-0 w-64 h-64 bg-yellow-400/10 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl"></div>
       <div className="max-w-7xl mx-auto relative">
         <motion.div 
           className="text-center mb-16"
@@ -70,7 +72,7 @@ const HowItWorks: React.FC = () => {
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-blue-500">
             How It Works
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">

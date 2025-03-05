@@ -19,7 +19,9 @@ services:
     environment:
       - CORS_ORIGINS=http://localhost:5173
       - MONGODB_URI=mongodb://mongodb:27017/designdev
-      - JWT_SECRET=your_jwt_secret_key
+      - JWT_SECRET=nitin
+      - GEMINI_API_KEY=AIzaSyD_5fblV5ao0Iu1dwnwBqgcBLYtuzA8vts
+      - PROTECT_AI_ENDPOINTS=false
     depends_on:
       - mongodb
     networks:
