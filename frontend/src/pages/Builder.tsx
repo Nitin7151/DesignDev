@@ -187,6 +187,8 @@ export function Builder() {
     webcontainer?.mount(mountStructure);
   }, [files, webcontainer]);
 
+
+
   async function init() {
     try {
       setLoading(true);
@@ -377,6 +379,7 @@ export function Builder() {
 
                     setLoading(true);
                     try {
+                      // -----------here we are sending pehle ka message and new prompt message to the ai---------
                       const stepsResponse = await axios.post(`${BACKEND_URL}/ai/chat`, {
                         messages: [...llmMessages, newMessage]
                       });
