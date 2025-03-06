@@ -47,7 +47,8 @@ describe('Template Endpoint', () => {
         });
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('response');
-        expect(response.body.response).toBe('This is a template response');
+        expect(response.body.response).toMatch(/template response/); // Regex assertion
+        expect(response.body.response).toMatch(/todo app/); // Additional regex assertion
         expect(mockedAxios.post).toHaveBeenCalledTimes(1);
     }));
     it('should handle errors from the Gemini API', () => __awaiter(void 0, void 0, void 0, function* () {
@@ -61,7 +62,8 @@ describe('Template Endpoint', () => {
         });
         expect(response.status).toBe(500);
         expect(response.body).toHaveProperty('message');
-        expect(response.body.message).toBe('Failed to fetch response from Gemini API');
+        expect(response.body.message).toMatch(/Failed to fetch response from Gemini API/); // Regex assertion
+        expect(response.body.message).toMatch(/API Error/); // Additional regex assertion
         expect(mockedAxios.post).toHaveBeenCalledTimes(1);
     }));
     it('should handle missing prompt parameter', () => __awaiter(void 0, void 0, void 0, function* () {
@@ -73,6 +75,7 @@ describe('Template Endpoint', () => {
         expect(response.status).toBe(400);
         expect(response.body).toHaveProperty('message');
         expect(response.body.message).toBe('Prompt is required');
+        expect(response.body.message).toMatch(/required/); // Additional regex assertion
         expect(mockedAxios.post).not.toHaveBeenCalled();
     }));
     it('should handle missing language parameter', () => __awaiter(void 0, void 0, void 0, function* () {
@@ -84,6 +87,7 @@ describe('Template Endpoint', () => {
         expect(response.status).toBe(400);
         expect(response.body).toHaveProperty('message');
         expect(response.body.message).toBe('Language is required');
+        expect(response.body.message).toMatch(/required/); // Additional regex assertion
         expect(mockedAxios.post).not.toHaveBeenCalled();
     }));
 });
