@@ -9,19 +9,16 @@ const protectAiEndpoints = process.env.PROTECT_AI_ENDPOINTS === 'true'
   ? protect 
   : (req: Request, res: Response, next: NextFunction) => next();
 
-// @route   POST /api/ai/template
-// @desc    Generate template based on prompt
-// @access  Protected or Public based on env variable
+//  ---------------------- POST /api/ai/template----template is selected here--------------------
+
 router.post('/template', protectAiEndpoints, generateTemplate);
 
-// @route   POST /api/ai/chat
-// @desc    Generate chat response
-// @access  Protected or Public based on env variable
+// -----------------------  POST /api/ai/chat------code is generated here----------------------------
+
 router.post('/chat', protectAiEndpoints, generateChat);
 
-// @route   POST /api/ai/chat-stream
-// @desc    Generate streaming chat response
-// @access  Protected or Public based on env variable
+// ------------------------ POST /api/ai/chat-stream----response comes in stream format------------------
+
 router.post('/chat-stream', protectAiEndpoints, generateChatStream);
 
 export default router;

@@ -191,7 +191,7 @@ export function Builder() {
   }, [files, webcontainer]);
 
 
-
+// -------------------downloading the whole folder when click on the button in zip format---------------------------------
   const exportProject = async () => {
     try {
       // Create a new JSZip instance
@@ -230,6 +230,7 @@ export function Builder() {
     }
   };
 
+  // ----------------------------------1st backend api call start yahi se hora ---------------
   async function init() {
     try {
       setLoading(true);
@@ -251,7 +252,7 @@ export function Builder() {
     })));
 
     setLoading(true);
-    // prompts came in ititial requres+user prompt yahan pass hora
+    // ------------------prompts came in ititial requres+user 3 prompt yahan pass hora------------------------------
     const stepsResponse = await axios.post(`${BACKEND_URL}/ai/chat`, {
       messages: [...prompts, prompt].map(content => ({
         role: "user",
@@ -261,16 +262,20 @@ export function Builder() {
 
     setLoading(false);
 
+    // ai template ka response ko convert kar ra from xml to ui-
+
     setSteps(s => [...s, ...parseXml(stepsResponse.data.response).map(x => ({
       ...x,
       status: "pending" as "pending"
     }))]);
 
+    // -----setLlmMessages function updates the  user’s previous prompts and the current prompt.--------------------------
     setLlmMessages([...prompts, prompt].map(content => ({
       role: "user",
       parts: [{ text: content }]
     })));
 
+    
     setLlmMessages(x => [...x, {role: "assistant", parts: [{ text: stepsResponse.data.response }]}])
     } catch (error: any) {
       const errorMsg = error.response?.data?.message || error.message;

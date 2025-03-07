@@ -54,14 +54,14 @@ export function Home() {
         return;
       }
 
-      // Make the API call to generate template
+      // --------------------------------yahan template generate hori hai-------------------------------------------
       console.log('Sending prompt with options:', prompt);
       const response = await axiosInstance.post('/ai/template', { 
         prompt,
-        language: 'typescript' // Adding required language parameter
+        language: 'typescript' 
       });
 
-      // Navigate to builder with the response data
+      // -----------------------------------Navigate to builder with the response data---------------------------
       navigate('/builder', { 
         state: { 
           code: response.data,

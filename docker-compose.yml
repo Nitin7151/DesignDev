@@ -23,7 +23,7 @@ services:
       - CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
       - MONGODB_URI=mongodb://mongodb:27017/designdev
       - JWT_SECRET=nitin
-      - GEMINI_API_KEY=AIzaSyD_5fblV5ao0Iu1dwnwBqgcBLYtuzA8vts
+      - GEMINI_API_KEY=AIzaSyD9i4IG9NEW3SO_nHNgdfSe4zEVxnqixxE
       - PROTECT_AI_ENDPOINTS=false
     depends_on:
       - mongodb

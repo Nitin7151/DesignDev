@@ -3,9 +3,7 @@ import { validationResult } from 'express-validator';
 import User, { IUser } from '../models/User';
 import { generateToken } from '../config/jwt';
 
-// @desc    Register a new user
-// @route   POST /api/auth/signup
-// @access  Public
+
 export const signup = async (req: Request, res: Response): Promise<any> => {
   try {
     // Check for validation errors
@@ -46,9 +44,7 @@ export const signup = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
-// @desc    Authenticate user & get token
-// @route   POST /api/auth/signin
-// @access  Public
+
 export const signin = async (req: Request, res: Response): Promise<any> => {
   try {
     // Check for validation errors
@@ -86,9 +82,7 @@ export const signin = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
-// @desc    Get user profile
-// @route   GET /api/auth/profile
-// @access  Private
+
 export const getUserProfile = async (req: Request, res: Response): Promise<any> => {
   try {
     const user = await User.findById(req.user._id).select('-password');

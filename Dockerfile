@@ -10,10 +10,8 @@ RUN npm install --force
 
 # Copy the client source code and .env file
 COPY frontend/ .
-
 # Build the client (output to /frontend/dist)
 RUN npm run build
-
 
 # ================================
 # Stage 2: Build the Server
@@ -30,35 +28,28 @@ COPY backend/ .
 COPY backend/.env .env
 
 # Compile TypeScript files (output to /backend/dist)
-RUN npm run build  # Ensure "build": "tsc" is in package.json
-
-# Create public directory in dist
-RUN mkdir -p dist/public
+RUN npm run build
 
 # ================================
 # Stage 3: Production Image (Integrated)
 # ================================
 FROM node:18-alpine
-WORKDIR /app
+WORKDIR /app/backend
 
 # Copy the built client artifacts into the backend's public folder
-COPY --from=frontend-builder /frontend/dist/ ./backend/dist/public/
+COPY --from=frontend-builder /frontend/dist ./dist/public
 
 # Copy only the compiled backend code (CommonJS JS files)
-COPY --from=backend-builder /backend/dist ./backend/dist
-
-# Copy node_modules (since compiled JS still depends on them)
-COPY --from=backend-builder /backend/node_modules ./backend/node_modules
-
-# Copy environment file
-COPY backend/.env ./backend/.env
+COPY --from=backend-builder /backend/dist ./dist
+COPY --from=backend-builder /backend/node_modules ./node_modules
+COPY --from=backend-builder /backend/.env .env
 
 # Set environment variables
 ENV NODE_ENV=production \
     PORT=3001
 
-# Expose only the backend port
+# Expose the port
 EXPOSE 3001
 
 # Run the compiled JavaScript file
-CMD ["node", "backend/dist/server.js"]
+CMD ["node", "dist/server.js"]

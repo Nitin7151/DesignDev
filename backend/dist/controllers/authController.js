@@ -16,9 +16,6 @@ exports.getUserProfile = exports.signin = exports.signup = void 0;
 const express_validator_1 = require("express-validator");
 const User_1 = __importDefault(require("../models/User"));
 const jwt_1 = require("../config/jwt");
-// @desc    Register a new user
-// @route   POST /api/auth/signup
-// @access  Public
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // Check for validation errors
@@ -56,9 +53,6 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.signup = signup;
-// @desc    Authenticate user & get token
-// @route   POST /api/auth/signin
-// @access  Public
 const signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // Check for validation errors
@@ -91,9 +85,6 @@ const signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.signin = signin;
-// @desc    Get user profile
-// @route   GET /api/auth/profile
-// @access  Private
 const getUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = yield User_1.default.findById(req.user._id).select('-password');

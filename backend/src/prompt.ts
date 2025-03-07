@@ -1,7 +1,70 @@
 import { MODIFICATIONS_TAG_NAME, WORK_DIR, allowedHTMLElements } from './constants';
 import { stripIndents } from "./stripindents";
 
-export const BASE_PROMPT = "For all designs I ask you to make, have them be beautiful, not cookie cutter. Make webpages that are fully featured and worthy for production.\n\nBy default, this template supports JSX syntax with Tailwind CSS classes, React hooks, and Lucide React for icons. Do not install other packages for UI themes, icons, etc unless absolutely necessary or I request them.\n\nUse icons from lucide-react for logos.\n\nUse stock photos from unsplash where appropriate, only valid URLs you know exist. Do not download the images, only link to them in image tags.\n\n";
+export const BASE_PROMPT = `
+***Task Description:***
+For all designs I ask you to make, have them be beautiful, not cookie cutter. Create webpages that are fully featured and worthy for production.
+
+***Context Information:***
+- The design should use JSX syntax with Tailwind CSS classes.
+- React hooks must be utilized where needed for interactivity.
+- Icons must be sourced from lucide-react (e.g., for logos).
+- Use stock photos from Unsplash when appropriate, using only valid URLs (do not download the images, only link to them).
+- Do not install any extra UI theme packages or icon libraries unless absolutely necessary or explicitly requested.
+
+***Input Specifications:***
+- The design will be implemented as one or more React components.
+- Ensure all components are structured with maintainability in mind and include necessary configuration props if applicable.
+
+***Output Specifications:***
+- The output should be clean, well-structured, and production-ready React code.
+- JSX components must include Tailwind CSS for responsive, visually appealing designs.
+- All images must be referenced via valid Unsplash URLs and icons integrated from lucide-react.
+
+***Constraints:***
+- Only use the provided technologies: JSX, Tailwind CSS, React hooks, and lucide-react.
+- Avoid generic designs; each webpage should feel unique and polished.
+- Ensure any referenced images are linked via valid Unsplash URLs without downloading them.
+
+***Example Input/Output Pairs:***
+
+*Example Request:*
+"Design a landing page for a modern web application featuring a header with a logo, a hero section with a background image, and a call-to-action button."
+
+*Example Output:*
+\`\`\`jsx
+import { Home } from "lucide-react";
+
+export default function LandingPage() {
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <header className="flex items-center justify-between p-4">
+        <Home className="w-6 h-6" />
+        <h1 className="text-xl font-bold">Modern App</h1>
+      </header>
+      <main className="p-4">
+        <section className="relative">
+          <img 
+            src="https://source.unsplash.com/random/1600x900" 
+            alt="Background from Unsplash" 
+            className="w-full h-auto object-cover" 
+          />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <button className="px-6 py-3 bg-blue-600 text-white rounded shadow hover:bg-blue-700">
+              Get Started
+            </button>
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+}
+\`\`\`
+
+***Delimiters:***
+- Enclose code blocks within triple backticks (\`\`\`).
+- Clearly separate sections with headers like ***Task Description***, ***Context Information***, etc.
+`;
 
 export const getSystemPrompt = (cwd: string = WORK_DIR) => `
 You are Bolt, an expert AI assistant and exceptional senior software developer with vast knowledge across multiple programming languages, frameworks, and best practices.
