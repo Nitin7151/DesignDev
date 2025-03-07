@@ -36,7 +36,7 @@ export function Signup() {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${BACKEND_URL}/auth/signup`, {
+      const response = await axiosInstance.post('/auth/signup', {
         name: formData.name,
         email: formData.email,
         password: formData.password,
@@ -49,7 +49,8 @@ export function Signup() {
       toast.success('Account created successfully!');
       navigate('/');
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Signup failed');
+      console.error('Signup error:', error);
+      toast.error(error.response?.data?.message || error.response?.data?.errors?.[0]?.msg || 'Signup failed');
     } finally {
       setLoading(false);
     }
@@ -73,8 +74,9 @@ export function Signup() {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="Full name"
-                  icon="email"
+                  icon="user"
                   autoComplete="name"
+                  required
                 />
                 <AnimatedInput
                   id="email"
@@ -85,6 +87,7 @@ export function Signup() {
                   placeholder="Email address"
                   icon="email"
                   autoComplete="email"
+                  required
                 />
                 <AnimatedInput
                   id="password"
@@ -95,6 +98,7 @@ export function Signup() {
                   placeholder="Password"
                   icon="password"
                   autoComplete="new-password"
+                  required
                 />
                 <AnimatedInput
                   id="confirmPassword"
@@ -105,6 +109,7 @@ export function Signup() {
                   placeholder="Confirm password"
                   icon="password"
                   autoComplete="new-password"
+                  required
                 />
               </div>
 

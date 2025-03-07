@@ -4,6 +4,7 @@ import { BACKEND_URL } from '../config';
 const axiosInstance = axios.create({
   baseURL: BACKEND_URL,
   timeout: 10000,
+  withCredentials: true
 });
 
 // Request interceptor for adding auth token

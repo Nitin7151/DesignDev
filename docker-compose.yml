@@ -6,7 +6,8 @@ services:
     ports:
       - "5173:5173"
     environment:
-      - VITE_API_URL=http://localhost:3001
+      - NODE_ENV=development
+      - VITE_BACKEND_URL=http://localhost:3001/api
     depends_on:
       - backend
     networks:
@@ -17,7 +18,9 @@ services:
     ports:
       - "3001:3001"
     environment:
-      - CORS_ORIGINS=http://localhost:5173
+      - NODE_ENV=development
+      - FRONTEND_URL=http://localhost:5173
+      - CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
       - MONGODB_URI=mongodb://mongodb:27017/designdev
       - JWT_SECRET=nitin
       - GEMINI_API_KEY=AIzaSyD_5fblV5ao0Iu1dwnwBqgcBLYtuzA8vts
@@ -44,4 +47,3 @@ networks:
 
 volumes:
   mongodb_data:
-

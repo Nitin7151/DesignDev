@@ -11,12 +11,19 @@ connectDB();
 
 const app = express();
 
+// CORS configuration
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? process.env.FRONTEND_URL || 'http://localhost:5173'
+    : ['http://localhost:5173', 'http://127.0.0.1:5173'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 204
+};
+
 // Middleware
-app.use(cors({
-  origin: ['http://localhost:5173'],
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Health check endpoint
@@ -32,9 +39,6 @@ app.use('/api/ai', aiRoutes);
 app.get('/api/protected', protect, (req, res) => {
   res.json({ message: 'This is a protected route', user: req.user });
 });
-
-// These routes are now directly handled by aiRoutes
-
 
 const PORT = process.env.PORT || 3001;
 
