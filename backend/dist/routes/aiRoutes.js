@@ -12,7 +12,7 @@ const protectAiEndpoints = process.env.PROTECT_AI_ENDPOINTS === 'true'
     ? auth_1.protect
     : (req, res, next) => next();
 //  ---------------------- POST /api/ai/template----template is selected here--------------------
-router.post('/template', protectAiEndpoints, aiController_1.generateTemplate);
+router.post('/template', aiController_1.generateTemplate);
 // -----------------------  POST /api/ai/chat------code is generated here----------------------------
 router.post('/chat', protectAiEndpoints, aiController_1.generateChat);
 // ------------------------ POST /api/ai/chat-stream----response comes in stream format------------------

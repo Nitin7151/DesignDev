@@ -30,11 +30,13 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return res.status(400).json({ message: 'User already exists' });
         }
         // Create new user
+        console.log("user is about to be created");
         const user = yield User_1.default.create({
             name,
             email,
             password,
         });
+        console.log("i am running");
         if (user) {
             res.status(201).json({
                 _id: user._id,

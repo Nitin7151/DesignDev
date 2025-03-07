@@ -18,7 +18,7 @@ const prompt_1 = require("../prompt");
 const node_1 = require("../main/node");
 const react_1 = require("../main/react");
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/google/gemini-2.0-flash-lite-preview-02-05:free';
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent';
 // @desc    Generate template based on prompt
 // @route   POST /api/ai/template
 const generateTemplate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

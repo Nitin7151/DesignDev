@@ -43,18 +43,18 @@ app.get('/api/health', (req, res) => {
 
 // Serve static files from the React app in production
 if (process.env.NODE_ENV === 'production') {
-  // Serve static files
-  const staticPath = path.join(__dirname, 'public');
+  // Serve static files from the static directory
+  const staticPath = path.join(__dirname, 'static');
   console.log('Static files path:', staticPath);
   app.use(express.static(staticPath));
-
+  
   // For any other route, serve the React index.html
   app.get('*', (req, res, next) => {
     // Skip API routes
     if (req.path.startsWith('/api/')) {
       return next();
     }
-    const indexPath = path.join(__dirname, 'public', 'index.html');
+    const indexPath = path.join(__dirname, 'static', 'index.html');
     console.log('Serving index.html from:', indexPath);
     res.sendFile(indexPath);
   });

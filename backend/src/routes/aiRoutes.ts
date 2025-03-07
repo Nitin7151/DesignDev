@@ -11,7 +11,7 @@ const protectAiEndpoints = process.env.PROTECT_AI_ENDPOINTS === 'true'
 
 //  ---------------------- POST /api/ai/template----template is selected here--------------------
 
-router.post('/template', protectAiEndpoints, generateTemplate);
+router.post('/template', generateTemplate);
 
 // -----------------------  POST /api/ai/chat------code is generated here----------------------------
 

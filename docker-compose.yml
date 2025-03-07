@@ -9,22 +9,29 @@ services:
       - NODE_ENV=development
       - VITE_BACKEND_URL=http://localhost:3001/api
     depends_on:
-      - backend
+      - app
     networks:
       - app-network
 
-  backend:
-    build: ./backend
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "3001:3001"
     environment:
-      - NODE_ENV=development
-      - FRONTEND_URL=http://localhost:5173
-      - CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
-      - MONGODB_URI=mongodb://mongodb:27017/designdev
-      - JWT_SECRET=nitin
-      - GEMINI_API_KEY=AIzaSyD9i4IG9NEW3SO_nHNgdfSe4zEVxnqixxE
-      - PROTECT_AI_ENDPOINTS=false
+      - NODE_ENV=production
+      - PORT=3001
+      # Use the MongoDB URI from .env file
+    env_file:
+      - ./backend/.env
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
     depends_on:
       - mongodb
     networks:

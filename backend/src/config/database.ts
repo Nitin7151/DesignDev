@@ -4,7 +4,7 @@ const connectDB = async (): Promise<void> => {
   try {
     // For testing purposes, we'll use a more flexible connection approach
     const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/designdev';
-    
+    console.log(mongoURI)
     // Set mongoose options to handle connection issues
     const options = {
       serverSelectionTimeoutMS: 10000, // Timeout after 10s instead of 30s

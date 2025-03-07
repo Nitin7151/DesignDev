@@ -5,7 +5,7 @@ import { basePrompt as nodeBasePrompt } from '../main/node';
 import { basePrompt as reactBasePrompt } from '../main/react';
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/google/gemini-2.0-flash-lite-preview-02-05:free';
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent';
 
 // @desc    Generate template based on prompt
 // @route   POST /api/ai/template

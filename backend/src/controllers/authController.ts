@@ -22,12 +22,15 @@ export const signup = async (req: Request, res: Response): Promise<any> => {
     }
 
     // Create new user
+    console.log("user is about to be created")
     const user = await User.create({
       name,
       email,
       password,
     });
-
+    
+    console.log("i am running");
+    
     if (user) {
       res.status(201).json({
         _id: user._id,
