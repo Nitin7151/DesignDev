@@ -27,6 +27,14 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
+// Add Cross-Origin Isolation headers for WebContainer support
+app.use((req, res, next) => {
+  // These headers are required for SharedArrayBuffer and WebContainer
+  res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  next();
+});
+
 // API routes - make sure these come before static file serving
 app.use('/api/auth', authRoutes);
 app.use('/api/ai', aiRoutes);
@@ -38,7 +46,17 @@ app.get('/api/protected', protect, (req, res) => {
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok' });
+  // Include the current headers in the response for debugging
+  const headers = {
+    'cross-origin-embedder-policy': res.getHeader('Cross-Origin-Embedder-Policy'),
+    'cross-origin-opener-policy': res.getHeader('Cross-Origin-Opener-Policy')
+  };
+  
+  res.json({ 
+    status: 'ok',
+    headers,
+    crossOriginIsolated: true
+  });
 });
 
 // Serve static files from the React app in production
@@ -66,6 +84,7 @@ const PORT = process.env.PORT || 3001;
 if (require.main === module) {
     app.listen(PORT, () => {
         console.log(`Server is running on port ${PORT}`);
+        console.log(`Cross-Origin Isolation is enabled for WebContainer support`);
     });
 }
 

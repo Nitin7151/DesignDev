@@ -44,7 +44,7 @@ export function Builder() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [templateSet, setTemplateSet] = useState(false);
-  const webcontainer = useWebContainer();
+  const { webcontainer, error: webContainerError, isInitializing } = useWebContainer();
 
   const [currentStep, setCurrentStep] = useState(1);
   const [activeTab, setActiveTab] = useState<'code' | 'preview'>('code');
@@ -144,6 +144,8 @@ export function Builder() {
 
 // -----------------------------webContainerCode---------------------------------------------
   useEffect(() => {
+    if (!webcontainer) return; // Don't try to mount if webcontainer is not available
+    
     const createMountStructure = (files: FileItem[]): Record<string, any> => {
       const mountStructure: Record<string, any> = {};
   
@@ -187,7 +189,7 @@ export function Builder() {
   
     // Mount the structure if WebContainer is available
     console.log(mountStructure);
-    webcontainer?.mount(mountStructure);
+    webcontainer.mount(mountStructure);
   }, [files, webcontainer]);
 
 
@@ -589,7 +591,31 @@ export function Builder() {
                     exit={{ opacity: 0 }}
                     className="h-full"
                   >
-                    <PreviewFrame webContainer={webcontainer} files={files} />
+                    {isInitializing ? (
+                      <div className="flex flex-col items-center justify-center h-full text-gray-400">
+                        <Loader />
+                        <p className="mt-4">Initializing WebContainer...</p>
+                      </div>
+                    ) : webContainerError ? (
+                      <div className="flex flex-col items-center justify-center h-full p-8">
+                        <div className="bg-red-900/20 border border-red-500/50 rounded-lg p-6 max-w-2xl text-center">
+                          <p className="text-lg font-semibold mb-4 text-red-400">Preview Unavailable</p>
+                          <p className="text-gray-300 mb-4">{webContainerError}</p>
+                          <div className="bg-gray-800 p-4 rounded text-left text-sm text-gray-300 mb-4">
+                            <p className="font-mono mb-2">To enable WebContainer, your server needs these headers:</p>
+                            <pre className="bg-gray-900 p-2 rounded overflow-auto">
+                              Cross-Origin-Embedder-Policy: require-corp
+                              Cross-Origin-Opener-Policy: same-origin
+                            </pre>
+                          </div>
+                          <p className="text-gray-400 text-sm">
+                            You can still edit code and export your project without the preview functionality.
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <PreviewFrame webContainer={webcontainer} files={files} />
+                    )}
                   </motion.div>
                 )}
               </AnimatePresence>

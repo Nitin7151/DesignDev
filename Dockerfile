@@ -1,5 +1,5 @@
 # ================================
-# Stage 1: Build the Client
+# -----------------------------------------Stage 1: Build the Client---------------------------------------------
 # ================================
 FROM node:18 AS frontend-builder
 WORKDIR /frontend
